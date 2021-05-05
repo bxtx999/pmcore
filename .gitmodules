@@ -1,0 +1,6 @@
+[submodule "3rd/Arachne"]
+	path = 3rd/Arachne
+	url = git@github.com:bxtx999/Arachne.git
+[submodule "3rd/pmembench"]
+	path = 3rd/pmembench
+	url = https://hub.fastgit.org/bxtx999/pmembench.git
