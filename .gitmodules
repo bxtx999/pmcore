@@ -4,3 +4,6 @@
 [submodule "3rd/pmembench"]
 	path = 3rd/pmembench
 	url = https://hub.fastgit.org/bxtx999/pmembench.git
+[submodule "3rd/CoreArbiter"]
+	path = 3rd/CoreArbiter
+	url = https://hub.fastgit.org/bxtx999/CoreArbiter.git
