@@ -18,16 +18,17 @@ void AppMain(int i) {
 
 // The following bootstrapping code should be copied verbatim into most Arachne
 // applications.
-void AppMainWrapper(int argc, const char** argv) {
-    for(int i=0; i<5; i++) {
-        AppMain(i);
-    }
+void AppMainWrapper(int i) {
+    AppMain(i);
     Arachne::shutDown();
 }
 
 int main(int argc, const char** argv){
     Arachne::init(&argc, argv);
-    Arachne::createThread(&AppMainWrapper, argc, argv);
+    // Arachne::createThread(&AppMainWrapper, argc, argv);
+    for (int i=1; i< 5; i++) {
+        Arachne::createThread(&AppMainWrapper, i);
+    }
     Arachne::waitForTermination();
     return 0;
 }
