@@ -1,27 +1,28 @@
 #include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
 #include "Arachne/Arachne.h"
 
-void numberPrinter(int n) {
-    printf("NumberPrinter says %d\n", n);
+void numberPrinter() {
+    srand (time(NULL));
+    printf("NumberPrinter says %d\n", rand() % 10 + 1);
 }
 
 // This is where user code should start running.
 void AppMain(int argc, const char** argv) {
     printf("Arachne says hello world and creates a thread.\n");
-    Arachne::ThreadId tid1 = Arachne::createThread(numberPrinter, 5);
-    Arachne::ThreadId tid2 = Arachne::createThread(numberPrinter, 6);
-    Arachne::ThreadId tid3 = Arachne::createThread(numberPrinter, 7);
-    Arachne::ThreadId tid4 = Arachne::createThread(numberPrinter, 8);
-    Arachne::join(tid1);
-    Arachne::join(tid2);
-    Arachne::join(tid3);
-    Arachne::join(tid4);
+    Arachne::ThreadId tid1 = Arachne::createThread(numberPrinter);
+    Arachne::join(tid);
 }
+
+
 
 // The following bootstrapping code should be copied verbatim into most Arachne
 // applications.
 void AppMainWrapper(int argc, const char** argv) {
-    AppMain(argc, argv);
+    for(int i=0; i<5; i++) {
+        AppMain(argc, argv);
+    }
     Arachne::shutDown();
 }
 
