@@ -8,6 +8,7 @@
 #include <mutex>
 #include <atomic>
 #include "libpmem.h"
+#include "Arachne/Arachne.h"
 // -------------------------------------------------------------------------------------
 using ub1 = uint8_t;
 using ub2 = uint16_t;
@@ -102,6 +103,7 @@ struct Worker {
              , config(config) {}
 
    ub4 tid;
+   // Arachne::ThreadId aid;
    std::string config;
    std::atomic<bool> run = false;
    std::atomic<bool> ready = false;

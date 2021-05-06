@@ -8,8 +8,14 @@ void numberPrinter(int n) {
 // This is where user code should start running.
 void AppMain(int argc, const char** argv) {
     printf("Arachne says hello world and creates a thread.\n");
-    auto tid = Arachne::createThread(numberPrinter, 5);
-    Arachne::join(tid);
+    Arachne::ThreadId tid1 = Arachne::createThread(numberPrinter, 5);
+    Arachne::ThreadId tid2 = Arachne::createThread(numberPrinter, 6);
+    Arachne::ThreadId tid3 = Arachne::createThread(numberPrinter, 7);
+    Arachne::ThreadId tid4 = Arachne::createThread(numberPrinter, 8);
+    Arachne::join(tid1);
+    Arachne::join(tid2);
+    Arachne::join(tid3);
+    Arachne::join(tid4);
 }
 
 // The following bootstrapping code should be copied verbatim into most Arachne

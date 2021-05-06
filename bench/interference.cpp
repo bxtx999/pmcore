@@ -38,7 +38,9 @@ void CreateAllThreads()
       all_threads.emplace_back(make_unique<thread>([&, tid]() {
          seq_ram_readers[tid]->Run();
       }));
-      all_workers.push_back(seq_ram_readers[tid].get());
+      
+      
+      .push_back(seq_ram_readers[tid].get());
    }
 
    // Sequential read nvm
