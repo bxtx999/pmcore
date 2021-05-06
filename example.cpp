@@ -11,7 +11,7 @@ void numberPrinter() {
 // This is where user code should start running.
 void AppMain(int argc, const char** argv) {
     printf("Arachne says hello world and creates a thread.\n");
-    Arachne::ThreadId tid1 = Arachne::createThread(numberPrinter);
+    Arachne::ThreadId tid = Arachne::createThread(numberPrinter);
     Arachne::join(tid);
 }
 
