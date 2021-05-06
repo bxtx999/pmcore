@@ -3,15 +3,14 @@
 #include <time.h>
 #include "Arachne/Arachne.h"
 
-void numberPrinter() {
-    srand (time(NULL));
-    printf("NumberPrinter says %d\n", rand() % 10 + 1);
+void numberPrinter(int i) {
+    printf("NumberPrinter says %d\n", i);
 }
 
 // This is where user code should start running.
-void AppMain(int argc, const char** argv) {
+void AppMain(int i) {
     printf("Arachne says hello world and creates a thread.\n");
-    Arachne::ThreadId tid = Arachne::createThread(numberPrinter);
+    Arachne::ThreadId tid = Arachne::createThread(numberPrinter, i);
     Arachne::join(tid);
 }
 
@@ -21,7 +20,7 @@ void AppMain(int argc, const char** argv) {
 // applications.
 void AppMainWrapper(int argc, const char** argv) {
     for(int i=0; i<5; i++) {
-        AppMain(argc, argv);
+        AppMain(i);
     }
     Arachne::shutDown();
 }
