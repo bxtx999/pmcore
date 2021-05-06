@@ -1,10 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 #include "Arachne/Arachne.h"
 
 void numberPrinter(int i) {
     printf("NumberPrinter says %d\n", i);
+    usleep(2e7);
 }
 
 // This is where user code should start running.
