@@ -510,7 +510,7 @@ createThreadOnCore(uint32_t coreId, _Callable&& __f, _Args&&... __args) {
         if (slotMap.numOccupied >= maxThreadsPerCore) {
             ARACHNE_LOG(VERBOSE,
                         "createThread failure, coreId = %u, "
-                        "numOccupied = %ld\n",
+                        "numOccupied = %d\n",
                         coreId, slotMap.numOccupied);
             return NullThread;
         }
@@ -521,7 +521,7 @@ createThreadOnCore(uint32_t coreId, _Callable&& __f, _Args&&... __args) {
             ARACHNE_LOG(WARNING,
                         "createThread failed after passing numOccupied"
                         " check, coreId = %u,"
-                        " numOccupied = %ld\n",
+                        " numOccupied = %d\n",
                         coreId, slotMap.numOccupied);
             return NullThread;
         }
