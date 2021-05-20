@@ -1125,7 +1125,7 @@ init(int* argcp, const char** argv) {
         occupiedAndCount[i] =
             reinterpret_cast<std::atomic<Arachne::MaskAndCount>*>(
                 alignedAlloc(sizeof(std::atomic<MaskAndCount>)));
-        memset(static_cast<void*>occupiedAndCount[i], 0, sizeof(std::atomic<MaskAndCount>));
+        memset(static_cast<void*>(occupiedAndCount[i]), 0, sizeof(std::atomic<MaskAndCount>));
 
         // Allocate all the thread contexts and stacks
         ThreadContext** contexts = new ThreadContext*[maxThreadsPerCore];
