@@ -40,7 +40,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         seq_ram_readers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_ram_readers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_ram_readers[tid].Run()));
       );
       
       
@@ -54,7 +54,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         seq_nvm_readers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_nvm_readers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_nvm_readers[tid].Run()));
       );
       all_workers.push_back(seq_nvm_readers[tid].get());
    }
@@ -66,7 +66,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         rnd_ram_readers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_ram_readers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_ram_readers[tid].Run()));
       );
       all_workers.push_back(rnd_ram_readers[tid].get());
    }
@@ -78,7 +78,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         rnd_nvm_readers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_nvm_readers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_nvm_readers[tid].Run()));
       );
       all_workers.push_back(rnd_nvm_readers[tid].get());
    }
@@ -90,7 +90,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         log_writers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(log_writers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(log_writers[tid].Run()));
       );
       all_workers.push_back(log_writers[tid].get());
    }
@@ -102,7 +102,7 @@ void CreateAllThreads()
 //              make_unique<thread>([&, tid]() {
 //         page_flushers[tid]->Run();
 //      })
-        make_unique<Arachne::ThreadContext>(&Arachne::createThread(page_flushers[tid]->Run()));
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(page_flushers[tid].Run()));
       );
       all_workers.push_back(page_flushers[tid].get());
    }
