@@ -44,7 +44,7 @@ void CreateAllThreads()
       );
       
       
-      all_workers.push_back(seq_ram_readers[tid].get());
+      all_workers.push_back(seq_ram_readers[tid]->get());
    }
 
    // Sequential read nvm
@@ -56,7 +56,7 @@ void CreateAllThreads()
 //      })
         make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_nvm_readers[tid].Run()));
       );
-      all_workers.push_back(seq_nvm_readers[tid].get());
+      all_workers.push_back(seq_nvm_readers[tid]->get());
    }
 
    // Random read ram
@@ -68,7 +68,7 @@ void CreateAllThreads()
 //      })
         make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_ram_readers[tid].Run()));
       );
-      all_workers.push_back(rnd_ram_readers[tid].get());
+      all_workers.push_back(rnd_ram_readers[tid]->get());
    }
 
    // Random read nvm
@@ -80,7 +80,7 @@ void CreateAllThreads()
 //      })
         make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_nvm_readers[tid].Run()));
       );
-      all_workers.push_back(rnd_nvm_readers[tid].get());
+      all_workers.push_back(rnd_nvm_readers[tid]->get());
    }
 
    // Log writer
@@ -92,7 +92,7 @@ void CreateAllThreads()
 //      })
         make_unique<Arachne::ThreadContext>(&Arachne::createThread(log_writers[tid].Run()));
       );
-      all_workers.push_back(log_writers[tid].get());
+      all_workers.push_back(log_writers[tid]->get());
    }
 
    // Page flush
@@ -104,7 +104,7 @@ void CreateAllThreads()
 //      })
         make_unique<Arachne::ThreadContext>(&Arachne::createThread(page_flushers[tid].Run()));
       );
-      all_workers.push_back(page_flushers[tid].get());
+      all_workers.push_back(page_flushers[tid]->get());
    }
 }
 // -------------------------------------------------------------------------------------
