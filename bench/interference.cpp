@@ -2,6 +2,7 @@
 #include "LogWriter.hpp"
 #include "SequentialReader.hpp"
 #include "RandomReader.hpp"
+#include "Arachne/Arachne.h"
 // -------------------------------------------------------------------------------------
 using namespace std;
 // -------------------------------------------------------------------------------------
@@ -24,7 +25,7 @@ vector<unique_ptr<RandomReader>> rnd_nvm_readers;
 vector<unique_ptr<LogWriter>> log_writers;
 vector<unique_ptr<PageFlusher>> page_flushers;
 vector<Worker *> all_workers;
-vector<unique_ptr<thread>> all_threads;
+vector<unique_ptr<Arachne::ThreadContext>> all_threads;
 // -------------------------------------------------------------------------------------
 // Common config
 string NVM_PATH = "";
@@ -35,9 +36,12 @@ void CreateAllThreads()
    // Sequential read ram
    for (ub4 tid = 0; tid<SEQ_RAM_THREADS; tid++) {
       seq_ram_readers.emplace_back(make_unique<SequentialReader>(NVM_PATH + "/seq_ram_reader_" + to_string(tid), SEQ_READER_BYTE_COUNT, true, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         seq_ram_readers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         seq_ram_readers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_ram_readers[tid]->Run()));
+      );
       
       
       .push_back(seq_ram_readers[tid].get());
@@ -46,45 +50,60 @@ void CreateAllThreads()
    // Sequential read nvm
    for (ub4 tid = 0; tid<SEQ_NVM_THREADS; tid++) {
       seq_nvm_readers.emplace_back(make_unique<SequentialReader>(NVM_PATH + "/seq_nvm_reader_" + to_string(tid), SEQ_READER_BYTE_COUNT, false, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         seq_nvm_readers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         seq_nvm_readers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(seq_nvm_readers[tid]->Run()));
+      );
       all_workers.push_back(seq_nvm_readers[tid].get());
    }
 
    // Random read ram
    for (ub4 tid = 0; tid<RND_RAM_THREADS; tid++) {
       rnd_ram_readers.emplace_back(make_unique<RandomReader>(NVM_PATH + "/rnd_ram_reader_" + to_string(tid), RND_READER_BYTE_COUNT, true, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         rnd_ram_readers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         rnd_ram_readers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_ram_readers[tid]->Run()));
+      );
       all_workers.push_back(rnd_ram_readers[tid].get());
    }
 
    // Random read nvm
    for (ub4 tid = 0; tid<RND_NVM_THREADS; tid++) {
       rnd_nvm_readers.emplace_back(make_unique<RandomReader>(NVM_PATH + "/rnd_nvm_reader_" + to_string(tid), RND_READER_BYTE_COUNT, false, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         rnd_nvm_readers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         rnd_nvm_readers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(rnd_nvm_readers[tid]->Run()));
+      );
       all_workers.push_back(rnd_nvm_readers[tid].get());
    }
 
    // Log writer
    for (ub4 tid = 0; tid<LOG_NVM_THREADS; tid++) {
       log_writers.emplace_back(make_unique<LogWriter>(NVM_PATH + "/log_writer_" + to_string(tid), LOG_BYTE_COUNT, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         log_writers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         log_writers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(log_writers[tid]->Run()));
+      );
       all_workers.push_back(log_writers[tid].get());
    }
 
    // Page flush
    for (ub4 tid = 0; tid<PAGE_NVM_THREADS; tid++) {
       page_flushers.emplace_back(make_unique<PageFlusher>(NVM_PATH + "/page_flush_" + to_string(tid), PAGE_FLUSH_PAGE_COUNT, tid, CONFIG_STRING));
-      all_threads.emplace_back(make_unique<thread>([&, tid]() {
-         page_flushers[tid]->Run();
-      }));
+      all_threads.emplace_back(
+//              make_unique<thread>([&, tid]() {
+//         page_flushers[tid]->Run();
+//      })
+        make_unique<Arachne::ThreadContext>(&Arachne::createThread(page_flushers[tid]->Run()));
+      );
       all_workers.push_back(page_flushers[tid].get());
    }
 }
@@ -124,7 +143,8 @@ void StopAll()
 void WaitForAllToDie()
 {
    for (auto &iter : all_threads) {
-      iter->join();
+//      iter->join();
+        Arachne::join(iter);
    }
 }
 // -------------------------------------------------------------------------------------
@@ -135,12 +155,17 @@ void PrintAll(ub4 iteration)
    }
 }
 // -------------------------------------------------------------------------------------
+void AppMainWrapper(int argc, const char** argv) {
+    Arachne::shutDown();
+}
+// -------------------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
    if (argc != 8) {
       cout << "usage: " << argv[0] << " SEQ_RAM SEQ_NVM RND_RAM RND_NVM LOG_NVM PAGE_NVM path" << endl;
       throw;
    }
+   Arachne::init(&argc, argv);
 
    SEQ_RAM_THREADS = stof(argv[1]);
    SEQ_NVM_THREADS = stof(argv[2]);
@@ -190,6 +215,8 @@ int main(int argc, char **argv)
    PrintAll(1); // run id, zero-based
 
    cout << "all good :)" << endl;
+   Arachne::shutDown();
+   Arachne::waitForTermination();
    return 0;
 }
 // -------------------------------------------------------------------------------------
