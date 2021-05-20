@@ -44,7 +44,7 @@ void CreateAllThreads()
       );
       
       
-      .push_back(seq_ram_readers[tid].get());
+      all_workers.push_back(seq_ram_readers[tid].get());
    }
 
    // Sequential read nvm
