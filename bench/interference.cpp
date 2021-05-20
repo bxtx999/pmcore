@@ -25,7 +25,7 @@ vector<unique_ptr<RandomReader>> rnd_nvm_readers;
 vector<unique_ptr<LogWriter>> log_writers;
 vector<unique_ptr<PageFlusher>> page_flushers;
 vector<Worker *> all_workers;
-vector<unique_ptr<createThread>> all_threads;
+vector<unique_ptr<Arachne::ThreadId>> all_threads;
 // -------------------------------------------------------------------------------------
 // Common config
 string NVM_PATH = "";
