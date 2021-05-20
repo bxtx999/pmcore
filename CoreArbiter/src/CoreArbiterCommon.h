@@ -75,7 +75,7 @@ struct ProcessStats {
           unpreemptedCount(0),
           numBlockedThreads(0),
           numOwnedCores(0) {
-        memset(threadCommunicationBlocks, 0, sizeof(threadCommunicationBlocks));
+        memset(static_cast<void*>(threadCommunicationBlocks), 0, sizeof(threadCommunicationBlocks));
     }
 };
 

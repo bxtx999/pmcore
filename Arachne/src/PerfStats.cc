@@ -99,7 +99,7 @@ PerfStats::releaseStats(std::unique_ptr<PerfStats> perfStats) {
 void
 PerfStats::collectStats(PerfStats* total, CorePolicy::CoreList coreList) {
     std::lock_guard<SpinLock> lock(mutex);
-    memset(total, 0, sizeof(*total));
+    memset(static_cast<void*>(total), 0, sizeof(*total));
     total->collectionTime = Cycles::rdtsc();
     total->cyclesPerSecond = Cycles::perSecond();
     for (size_t i = 0; i < coreList.size(); i++) {
