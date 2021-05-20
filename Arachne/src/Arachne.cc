@@ -227,7 +227,7 @@ initializeCore(Core* core) {
 
     core->highPriorityThreads = reinterpret_cast<std::atomic<uint64_t>*>(
         alignedAlloc(sizeof(std::atomic<uint64_t>)));
-    memset(core->highPriorityThreads, 0, sizeof(std::atomic<uint64_t>));
+    memset(static_cast<void*>(core->highPriorityThreads), 0, sizeof(std::atomic<uint64_t>));
 
     // Allocate stacks and contexts
     ThreadContext** contexts = new ThreadContext*[maxThreadsPerCore];
@@ -1125,7 +1125,7 @@ init(int* argcp, const char** argv) {
         occupiedAndCount[i] =
             reinterpret_cast<std::atomic<Arachne::MaskAndCount>*>(
                 alignedAlloc(sizeof(std::atomic<MaskAndCount>)));
-        memset(occupiedAndCount[i], 0, sizeof(std::atomic<MaskAndCount>));
+        memset(static_cast<void*>occupiedAndCount[i], 0, sizeof(std::atomic<MaskAndCount>));
 
         // Allocate all the thread contexts and stacks
         ThreadContext** contexts = new ThreadContext*[maxThreadsPerCore];
@@ -1492,7 +1492,7 @@ preventCreationsToCore(int coreId) {
     // It is an error if the core we are migrating to is already exclusive.
     if (originalMask.numOccupied > maxThreadsPerCore) {
         ARACHNE_LOG(ERROR,
-                    "preventCreationsToCore: Occupied = %lu, numOccupied = %lu "
+                    "preventCreationsToCore: Occupied = %lu, numOccupied = %u "
                     "on core %d\n",
                     originalMask.occupied, originalMask.numOccupied, coreId);
         abort();
