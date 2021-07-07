@@ -130,3 +130,7 @@ build
 
 # exe.
 example
+
+# results
+memcached/results/*
+!memcached/results/.gitkeep

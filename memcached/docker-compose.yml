@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+
+  memtier_benchmark:
+    image: redislabs/memtier_benchmark:latest
+    # 测试本地6379端口，模拟并发线程4个，每个线程驱动100个客户端，其中4k大小的key占比50%，512k大小的key占比50%，总共测试1800s，读写比例10:1，将每个客户端的日志保存在/dir/client.txt中，将总的结果保存在/dir/result.txt中。
+    command: --protocol=memcache_text --server=memcached --port=11211 --threads=2  --clients=50 --data-size-list=4000:50,512000:50 --test-time=200 --ratio=1:10 --client-stats=/data/client  --out-file=/data/result.txt
+    links:
+      - memcached
+    volumes:
+      - ./results:/data
+
+  memcached:
+    image: bitnami/memcached:1.6.9-debian-10-r194
+    ports:
+      - '11211:11211'
+    command: /opt/bitnami/scripts/memcached/run.sh -vvv
+    environment:
+      - MEMCACHED_CACHE_SIZE=128
+      - MEMCACHED_MAX_CONNECTIONS=2000
+      - MEMCACHED_THREADS=4
