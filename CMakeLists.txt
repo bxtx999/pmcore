@@ -12,7 +12,7 @@ set (CMAKE_INCLUDE_CURRENT_DIR ON)
 
 set(PMDK /home/aim/hjn/pmdk)
 
-add_executable(example ./example.cpp)
+add_executable(./example.cpp)
 target_compile_features(example PRIVATE cxx_std_17)
 target_include_directories(example PRIVATE Arachne/include CoreArbiter/include PerfUtils/include)
 target_link_directories(example PRIVATE PerfUtils/lib Arachne/lib CoreArbiter/lib)
