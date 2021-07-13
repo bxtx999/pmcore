@@ -18,14 +18,6 @@ target_include_directories(example PRIVATE Arachne/include CoreArbiter/include P
 target_link_directories(example PRIVATE PerfUtils/lib Arachne/lib CoreArbiter/lib)
 target_link_libraries(example PRIVATE Arachne CoreArbiter PerfUtils pthread pcrecpp stdc++)
 
-
-#clang++ -g0 -O3 -DNDEBUG=1 -march=native -std=c++17
-#bench/interference.cpp -IArachne/include -ICoreArbiter/include
-#-IPerfUtils/include -I${PMDK}/src/include/
-#${PMDK}/src/nondebug/libpmem.a ${PMDK}/src/nondebug/libpmemlog.a
-#-LArachne/lib -lArachne -LCoreArbiter/lib -lCoreArbiter
-#-LPerfUtils/lib/ -lPerfUtils  -lpcrecpp -lpthread -lndctl -ldaxctl
-
 file(GLOB BENCH_SOURCE bench/*.hpp)
 add_executable(bench_origin bench/interference.cpp ${BENCH_SOURCE})
 target_compile_features(bench_origin PRIVATE cxx_std_17)
