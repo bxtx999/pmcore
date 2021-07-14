@@ -16,6 +16,7 @@
 #include <thread>
 #define private public
 
+#include <algorithm>
 #include "CoreArbiterServer.h"
 #include "Logger.h"
 #include "MockSyscall.h"

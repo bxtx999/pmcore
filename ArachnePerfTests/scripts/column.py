@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 from sys import argv, stdin
 from docopt import docopt
@@ -85,7 +85,7 @@ def main():
     orderedColumns = \
         [columnLists[headerColumns[i]] for i in xrange(len(headerColumns))]
     for row in zip(*orderedColumns):
-        print options['--output-separator'].join(row)
+        print(options['--output-separator'].join(row))
 
 
 if __name__ == '__main__':

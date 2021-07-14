@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <atomic>
 #include <thread>
+#include <functional>
 
 #include "CoreArbiterClient.h"
 #include "Logger.h"
